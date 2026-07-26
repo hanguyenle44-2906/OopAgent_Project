@@ -1,0 +1,9 @@
+{
+  "name": "agent-test",
+  "version": "0.1.0",
+  "dependencies": [
+    "curl",
+    "nlohmann-json"
+  ],
+  "builtin-baseline": "40f3c709db80acf154ac4b17a1f83c564ebd022e"
+}
