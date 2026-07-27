@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "prompt": "Calculate 15 * 24 + 100",
+    "expected": "460",
+    "type": "calculator"
+  },
+  {
+    "id": 2,
+    "prompt": "Create a file named test.txt with content 'Hello World'",
+    "expected": "Hello World",
+    "type": "file"
+  },
+  {
+    "id": 3,
+    "prompt": "Read the contents of test.txt",
+    "expected": "Hello World",
+    "type": "file"
+  },
+  {
+    "id": 4,
+    "prompt": "Run shell command 'echo C++ Agent'",
+    "expected": "C++ Agent",
+    "type": "exec"
+  },
+  {
+    "id": 5,
+    "prompt": "Calculate 1024 / 8",
+    "expected": "128",
+    "type": "calculator"
+  },
+  {
+    "id": 6,
+    "prompt": "Calculate (50 + 50) * 2",
+    "expected": "200",
+    "type": "calculator"
+  },
+  {
+    "id": 7,
+    "prompt": "Write 'OOP Logic' into log.txt",
+    "expected": "log.txt",
+    "type": "file"
+  },
+  {
+    "id": 8,
+    "prompt": "Read the contents of log.txt",
+    "expected": "OOP Logic",
+    "type": "file"
+  },
+  {
+    "id": 9,
+    "prompt": "Run shell command 'whoami'",
+    "expected": "codespace",
+    "type": "exec"
+  },
+  {
+    "id": 10,
+    "prompt": "Calculate 99 - 33 + 12",
+    "expected": "78",
+    "type": "calculator"
+  }
+]

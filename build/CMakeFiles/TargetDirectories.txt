@@ -1,0 +1,3 @@
+/workspaces/OopAgent_Project/build/CMakeFiles/ai_agent.dir
+/workspaces/OopAgent_Project/build/CMakeFiles/edit_cache.dir
+/workspaces/OopAgent_Project/build/CMakeFiles/rebuild_cache.dir
