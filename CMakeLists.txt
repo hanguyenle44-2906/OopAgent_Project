@@ -17,11 +17,24 @@ add_executable(
 	src/tools/file_tool.cpp
 	src/tools/exec_tool.cpp
 	src/tools/web_tool.cpp
+	src/tools/memory_tool.cpp
 	src/agent/agent.cpp
 )
+
 target_link_libraries(
 	ai_agent PRIVATE
 	CURL::libcurl
+	nlohmann_json::nlohmann_json
+	unofficial::sqlite3::sqlite3
+)
+
+add_executable(test_memory
+	test_memory.cpp
+	src/tools/tool_registry.cpp
+	src/tools/memory_tool.cpp
+)
+
+target_link_libraries(test_memory PRIVATE
 	nlohmann_json::nlohmann_json
 	unofficial::sqlite3::sqlite3
 )

@@ -3,6 +3,7 @@
 #include "src/tools/file_tool.h"
 #include "src/tools/exec_tool.h"
 #include "src/tools/web_tool.h"
+#include "src/tools/memory_tool.h"
 
 #include "src/client/ollama_client.h"
 #include "src/agent/agent.h"
@@ -22,6 +23,7 @@ int main() {
     registry.registerTool("file", []() { return std::make_unique<FileTool>(); });
     registry.registerTool("exec", []() { return std::make_unique<ExecTool>(); });
     registry.registerTool("web_search", []() { return std::make_unique<WebTool>(); });
+    registry.registerTool("memory", []() { return std::make_unique<MemoryTool>(); });
 
     auto llmClient = std::make_shared<OllamaClient>();
     Agent agent(llmClient, registry, 5); // Tối đa 5 bước suy luận cho mỗi task
