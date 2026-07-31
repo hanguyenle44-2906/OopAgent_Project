@@ -29,14 +29,27 @@ target_link_libraries(
 	unofficial::sqlite3::sqlite3
 )
 
-add_executable(test_memory
-	test_memory.cpp
+add_executable(manual_test
+	manual_test.cpp
 	src/tools/tool_registry.cpp
 	src/tools/memory_tool.cpp
 	src/agent/skill_loader.cpp
 )
-
-target_link_libraries(test_memory PRIVATE
+target_link_libraries(manual_test PRIVATE
 	nlohmann_json::nlohmann_json
 	unofficial::sqlite3::sqlite3
+)
+
+# Tu dong copy thu muc skills/ vao cung cho voi file .exe moi lan build,
+# de chuong trinh luon tim thay "skills" bang duong dan tuong doi, bat ke
+# working directory duoc IDE cau hinh la gi.
+add_custom_command(TARGET ai_agent POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_SOURCE_DIR}/skills"
+		"$<TARGET_FILE_DIR:ai_agent>/skills"
+)
+add_custom_command(TARGET manual_test POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_SOURCE_DIR}/skills"
+		"$<TARGET_FILE_DIR:manual_test>/skills"
 )

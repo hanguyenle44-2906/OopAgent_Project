@@ -3,8 +3,6 @@
 #include <filesystem>
 
 int main() {
-    std::cout << "Working directory: " << std::filesystem::current_path() << "\n";
-
     SkillLoader loader;
     loader.loadSkills("skills");
 
