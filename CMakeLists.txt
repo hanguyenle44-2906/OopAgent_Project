@@ -15,5 +15,6 @@ add_executable(
 	src/tools/calculator_tool.cpp
 	src/tools/file_tool.cpp
 	src/tools/exec_tool.cpp
+	src/tools/web_tool.cpp
 )
 target_link_libraries(ai_agent PRIVATE CURL::libcurl nlohmann_json::nlohmann_json)

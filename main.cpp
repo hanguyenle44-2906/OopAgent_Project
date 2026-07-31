@@ -2,6 +2,7 @@
 #include "src/tools/calculator_tool.h"
 #include "src/tools/file_tool.h"
 #include "src/tools/exec_tool.h"
+#include "src/tools/web_tool.h"
 #include <iostream>
 
 int main() {
@@ -10,10 +11,11 @@ int main() {
     registry.registerTool("calculator", []() { return std::make_unique<CalculatorTool>(); });
     registry.registerTool("file", []() { return std::make_unique<FileTool>(); });
     registry.registerTool("exec", []() { return std::make_unique<ExecTool>(); });
+    registry.registerTool("web_search", []() { return std::make_unique<WebTool>(); });
 
-    auto execTool = registry.createTool("exec");
-    std::string output = execTool->execute(R"({"command": "echo Hello from exec tool"})");
-    std::cout << "Exec output: " << output;
+    auto searchTool = registry.createTool("web_search");
+    std::string result = searchTool->execute(R"({"query": "Vietnam"})");
+    std::cout << "Ket qua tim kiem: " << result << "\n";
 
     return 0;
 }
