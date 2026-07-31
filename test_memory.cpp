@@ -1,15 +1,22 @@
-// test_memory.cpp - CHỈ ĐỂ THAM KHẢO, không add vào CMakeLists, xoá sau khi test xong
-#include "src/tools/tool_registry.h"
-#include "src/tools/memory_tool.h"
+#include "src/agent/skill_loader.h"
 #include <iostream>
+#include <filesystem>
 
 int main() {
-    ToolRegistry registry;
-    registry.registerTool("memory", []() { return std::make_unique<MemoryTool>(); });
+    std::cout << "Working directory: " << std::filesystem::current_path() << "\n";
 
-    auto memTool = registry.createTool("memory");
-    std::cout << memTool->execute(R"({"action":"save","key":"mon_hoc","content":"OOP la mon hoc thu vi"})") << "\n";
-    std::cout << memTool->execute(R"({"action":"search","query":"OOP"})");
+    SkillLoader loader;
+    loader.loadSkills("skills");
+
+    std::cout << "So skill da load: " << loader.getAllSkills().size() << "\n";
+
+    auto skill = loader.selectSkill("Toi can tim kiem thong tin ve gia vang hom nay");
+    if (skill.has_value()) {
+        std::cout << "Skill phu hop: " << skill->name << "\n";
+    }
+    else {
+        std::cout << "Khong tim thay skill phu hop\n";
+    }
 
     return 0;
 }

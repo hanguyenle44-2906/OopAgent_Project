@@ -19,6 +19,7 @@ add_executable(
 	src/tools/web_tool.cpp
 	src/tools/memory_tool.cpp
 	src/agent/agent.cpp
+	src/agent/skill_loader.cpp
 )
 
 target_link_libraries(
@@ -32,6 +33,7 @@ add_executable(test_memory
 	test_memory.cpp
 	src/tools/tool_registry.cpp
 	src/tools/memory_tool.cpp
+	src/agent/skill_loader.cpp
 )
 
 target_link_libraries(test_memory PRIVATE
