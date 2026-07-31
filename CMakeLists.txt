@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(CURL REQUIRED)
 find_package(nlohmann_json REQUIRED)
+find_package(unofficial-sqlite3 CONFIG REQUIRED)
 
 add_executable(
 	ai_agent
@@ -18,4 +19,9 @@ add_executable(
 	src/tools/web_tool.cpp
 	src/agent/agent.cpp
 )
-target_link_libraries(ai_agent PRIVATE CURL::libcurl nlohmann_json::nlohmann_json)
+target_link_libraries(
+	ai_agent PRIVATE
+	CURL::libcurl
+	nlohmann_json::nlohmann_json
+	unofficial::sqlite3::sqlite3
+)
