@@ -2,6 +2,7 @@
 
 #include <string>
 #include <algorithm>
+#include <cstdlib> // Thêm thư viện này cho std::system
 
 // Interface chung cho các bộ chấm điểm (Observer Pattern)
 class Evaluator {
@@ -23,5 +24,18 @@ public:
         std::transform(expectedLower.begin(), expectedLower.end(), expectedLower.begin(), ::tolower);
 
         return (actualLower.find(expectedLower) != std::string::npos) ? 1.0 : 0.0;
+    }
+};
+
+// Chấm điểm chức năng / chạy test script tự động
+class FunctionalEvaluator : public Evaluator {
+public:
+    double evaluate(const std::string& actualOutput, const std::string& expectedOutput) override {
+        if (expectedOutput.empty()) {
+            return actualOutput.empty() ? 0.0 : 1.0;
+        }
+        // Nếu expectedOutput chứa lệnh/script kiểm thử thì thực thi lệnh hệ thống
+        int result = std::system(expectedOutput.c_str());
+        return (result == 0) ? 1.0 : 0.0;
     }
 };

@@ -126,7 +126,7 @@ std::string Agent::run(const std::string& userQuery) {
         // Nếu Agent lặp lại y hệt 1 action nhiều lần liên tiếp (LLM bị kẹt, không tiến triển),
         // LoopDetector sẽ phát hiện và Agent chủ động dừng thay vì chạy tới hết maxSteps_.
         std::string actionSignature = action + ":" + actionInputStr;
-        if (loopDetector_.is_looping(actionSignature)) {
+        if (loopDetector_.detectLoop(action, actionInputStr)) {
             std::cout << "[LoopDetector] Detected infinite loop on action: " << actionSignature << std::endl;
             return "Execution aborted: Agent got stuck in an infinite loop.";
         }
