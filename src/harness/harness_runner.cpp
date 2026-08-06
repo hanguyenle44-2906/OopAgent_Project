@@ -46,7 +46,16 @@ void HarnessRunner::runBenchmark(const std::string& tasksJsonPath, const std::st
     std::cout << "=============================================\n" << std::endl;
 
     for (const auto& task : tasks) {
-        std::string id = task.value("id", "task_000");
+        // [GIA CỐ]: Lấy ID an toàn bất chấp "id" trong JSON là string ("task_001") hay number (1)
+        std::string id = "task_000";
+        if (task.contains("id")) {
+            if (task["id"].is_string()) {
+                id = task["id"].get<std::string>();
+            } else if (task["id"].is_number()) {
+                id = "task_" + std::to_string(task["id"].get<int>());
+            }
+        }
+
         std::string prompt = task.value("instruction", task.value("prompt", ""));
         std::string expected = task.value("expected", "");
         std::string evalType = task.value("eval_type", "keyword");
@@ -58,7 +67,21 @@ void HarnessRunner::runBenchmark(const std::string& tasksJsonPath, const std::st
         totalScore += score;
 
         std::cout << " => Score: " << score << "/1.0\n" << std::endl;
-        logger.logStep(std::stoi(id.substr(id.find_last_of('_') + 1)), prompt, "eval", "Score: " + std::to_string(score));
+
+        // [GIA CỐ]: Bọc try-catch quanh std::stoi để không bao giờ bị văng/crash chương trình
+        int stepId = 0;
+        try {
+            std::size_t pos = id.find_last_of('_');
+            if (pos != std::string::npos && pos + 1 < id.length()) {
+                stepId = std::stoi(id.substr(pos + 1));
+            } else {
+                stepId = std::stoi(id);
+            }
+        } catch (...) {
+            stepId = 0; // Fallback mặc định nếu id không chứa số
+        }
+
+        logger.logStep(stepId, prompt, "eval", "Score: " + std::to_string(score));
     }
 
     logger.saveToFile(outputTrajectoryPath);
@@ -66,4 +89,4 @@ void HarnessRunner::runBenchmark(const std::string& tasksJsonPath, const std::st
     std::cout << "---------------------------------------------" << std::endl;
     std::cout << "Tỷ lệ thành công (Success Rate): " << (totalScore / taskCount) * 100.0 << "%" << std::endl;
     std::cout << "Trajectory log da duoc luu tai: " << outputTrajectoryPath << std::endl;
-}
+} 

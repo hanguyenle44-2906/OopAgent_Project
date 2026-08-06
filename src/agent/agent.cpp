@@ -2,6 +2,41 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
+// ============================================================================
+// HELPER: cleanJsonResponse()
+// ----------------------------------------------------------------------------
+// Mục đích: Tự động trích xuất chuỗi JSON nằm giữa Markdown block (```json ... ```)
+// hoặc cắt bỏ các ký tự thừa trước { và sau }, giúp nlohmann::json parse 100% 
+// thành công kể cả khi LLM kèm thêm text tự do.
+// ============================================================================
+static std::string cleanJsonResponse(const std::string& raw) {
+    std::string s = raw;
+    
+    // 1. Loại bỏ Markdown codeblocks (```json ... ```)
+    std::size_t startPos = s.find("```json");
+    if (startPos != std::string::npos) {
+        s.erase(startPos, 7);
+    } else {
+        startPos = s.find("```");
+        if (startPos != std::string::npos) {
+            s.erase(startPos, 3);
+        }
+    }
+    std::size_t endPos = s.rfind("```");
+    if (endPos != std::string::npos) {
+        s.erase(endPos, 3);
+    }
+
+    // 2. Cắt các ký tự trắng thừa ở 2 đầu
+    size_t first = s.find('{');
+    size_t last = s.rfind('}');
+    if (first != std::string::npos && last != std::string::npos && last >= first) {
+        return s.substr(first, (last - first + 1));
+    }
+    
+    return s;
+}
+
 // buildSystemPrompt()
 // ----------------------------------------------------------------------------
 // Mục đích: Tạo System Prompt để "ép" LLM luôn phản hồi theo đúng định dạng
@@ -26,11 +61,16 @@ std::string Agent::buildSystemPrompt() {
     // Việc yêu cầu "respond with ONLY a JSON object" giúp giảm thiểu rủi ro LLM
     // chèn thêm text giải thích ngoài JSON, gây lỗi parse ở bước sau.
     prompt += R"(
+CRITICAL TOOL SCHEMA RULES:
+1. For tool "exec", "action_input" MUST be a JSON object string: "{\"command\": \"your_command_here\"}"
+2. For tool "file", "action_input" MUST be a JSON object string with "path" and "content" or "mode".
+3. Do NOT invent non-existent tools (e.g. "print"). Use "final_answer" when done.
+
 To use a tool, respond with ONLY a JSON object in this exact format:
 {
     "thought": "your reasoning here",
     "action": "tool_name",
-    "action_input": "{\"key\": \"value\"}" 
+    "action_input": "{\"command\": \"echo Hello\"}" 
 }
 
 If you have reached the final answer, respond with ONLY:
@@ -62,6 +102,11 @@ std::string Agent::run(const std::string& userQuery) {
     messages.push_back({"user", userQuery});               // Câu hỏi/gốc yêu cầu ban đầu của user
 
     LLMConfig config; // Cấu hình mặc định gọi LLM (mặc định trỏ tới Ollama, theo comment gốc)
+    
+    // [GIA CỐ]: Thiết lập thông số an toàn cho config
+    config.model = "qwen2.5:0.5b";
+    config.temperature = 0.1;
+
     int step = 0;     // Đếm số bước (vòng lặp) đã thực hiện, để giới hạn bởi maxSteps_
 
     // ---- Vòng lặp ReAct chính ----
@@ -74,6 +119,9 @@ std::string Agent::run(const std::string& userQuery) {
         try {
             response = client_->generate(messages, config);
         } catch (const std::exception& e) {
+            // [GIA CỐ]: In thông báo lỗi trực tiếp ra Terminal để dễ debug
+            std::cout << "[Agent Error] Exception encountered: " << e.what() << std::endl;
+            
             // Nếu lỗi kết nối/timeout tới LLM -> dừng ngay, trả lỗi cho user
             // (không retry ở đây để tránh vòng lặp tốn tài nguyên khi LLM down)
             return std::string("LLM Error: ") + e.what();
@@ -85,7 +133,9 @@ std::string Agent::run(const std::string& userQuery) {
         // (2) Bóc tách (parse) JSON từ nội dung LLM trả về
         nlohmann::json parsed;
         try {
-            parsed = nlohmann::json::parse(rawContent);
+            // [THÊM GIA CỐ]: Làm sạch chuỗi trước khi parse
+            std::string cleanedContent = cleanJsonResponse(rawContent);
+            parsed = nlohmann::json::parse(cleanedContent);
         } catch (...) {
             // Trường hợp LLM "phá lệ" không trả đúng JSON (rất hay gặp với model nhỏ):
             // - Lưu lại output sai định dạng vào lịch sử (để LLM thấy được lỗi của chính nó)

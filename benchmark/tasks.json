@@ -1,0 +1,86 @@
+[
+  {
+    "id": "task_001",
+    "description": "Tính toán số học đơn giản",
+    "instruction": "Tính 15 * 24 + 100",
+    "eval_type": "keyword",
+    "expected": "460",
+    "max_steps": 5
+  },
+  {
+    "id": "task_002",
+    "description": "Tạo file văn bản",
+    "instruction": "Tạo file test.txt chứa chữ 'Hello World'",
+    "eval_type": "functional",
+    "expected": "Hello World",
+    "eval_script": "test -f test.txt && grep -q 'Hello World' test.txt",
+    "max_steps": 5
+  },
+  {
+    "id": "task_003",
+    "description": "Đọc nội dung file",
+    "instruction": "Đọc nội dung của file test.txt",
+    "eval_type": "keyword",
+    "expected": "Hello World",
+    "max_steps": 5
+  },
+  {
+    "id": "task_004",
+    "description": "Chạy lệnh hệ thống cơ bản",
+    "instruction": "Chạy lệnh shell 'echo C++ Agent'",
+    "eval_type": "keyword",
+    "expected": "C++ Agent",
+    "max_steps": 5
+  },
+  {
+    "id": "task_005",
+    "description": "Phép chia số nguyên",
+    "instruction": "Tính toán biểu thức 1024 / 8",
+    "eval_type": "keyword",
+    "expected": "128",
+    "max_steps": 5
+  },
+  {
+    "id": "task_006",
+    "description": "Tính biểu thức có ngoặc",
+    "instruction": "Tính (50 + 50) * 2",
+    "eval_type": "keyword",
+    "expected": "200",
+    "max_steps": 5
+  },
+  {
+    "id": "task_007",
+    "description": "Ghi log vào file",
+    "instruction": "Ghi chuỗi 'OOP Logic' vào file log.txt",
+    "eval_type": "functional",
+    "expected": "OOP Logic",
+    "eval_script": "test -f log.txt && grep -q 'OOP Logic' log.txt",
+    "max_steps": 5
+  },
+  {
+    "id": "task_008",
+    "description": "Kiểm tra log file",
+    "instruction": "Đọc nội dung file log.txt",
+    "eval_type": "keyword",
+    "expected": "OOP Logic",
+    "max_steps": 5
+  },
+  {
+    "id": "task_009",
+    "description": "Tính toán và lưu file",
+    "instruction": "Tính 99 - 33 + 12 sau đó lưu kết quả vào file calc_res.txt",
+    "eval_type": "functional",
+    "expected": "78",
+    "eval_script": "test -f calc_res.txt && grep -q '78' calc_res.txt",
+    "max_steps": 10
+  },
+  {
+    "id": "task_010",
+    "description": "Multi-step system check",
+    "instruction": "Chạy lệnh shell 'whoami', lưu tên user vào user.txt",
+    "eval_type": "functional",
+    "expected": "",
+    "eval_script": "test -f user.txt",
+    "max_steps": 10
+  }
+]

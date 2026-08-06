@@ -53,3 +53,45 @@ add_custom_command(TARGET manual_test POST_BUILD
 		"${CMAKE_SOURCE_DIR}/skills"
 		"$<TARGET_FILE_DIR:manual_test>/skills"
 )
+CMake
+
+add_executable(run_eval
+	benchmark/run_eval.cpp
+	src/client/ollama_client.cpp
+	src/tools/tool_registry.cpp
+	src/tools/calculator_tool.cpp
+	src/tools/file_tool.cpp
+	src/tools/exec_tool.cpp
+	src/tools/web_tool.cpp
+	src/tools/memory_tool.cpp
+	src/agent/agent.cpp
+	src/agent/loop_detector.cpp
+	src/agent/skill_loader.cpp
+	src/harness/harness_runner.cpp
+	src/harness/trajectory.cpp
+)
+
+target_link_libraries(run_eval PRIVATE
+	CURL::libcurl
+	nlohmann_json::nlohmann_json
+	unofficial::sqlite3::sqlite3
+)
+
+# Tự động copy thư mục skills/ và benchmark/ vào cùng nơi chứa file thực thi run_eval
+add_custom_command(TARGET run_eval POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_SOURCE_DIR}/skills"
+		"$<TARGET_FILE_DIR:run_eval>/skills"
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_SOURCE_DIR}/benchmark"
+		"$<TARGET_FILE_DIR:run_eval>/benchmark"
+)
+
+add_executable(unit_tests
+	tests/test_member_b.cpp
+	src/agent/loop_detector.cpp
+)
+
+target_link_libraries(unit_tests PRIVATE
+	nlohmann_json::nlohmann_json
+)
