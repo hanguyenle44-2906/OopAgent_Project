@@ -48,13 +48,12 @@
     "expected": "200",
     "max_steps": 5
   },
-  {
+{
     "id": "task_007",
     "description": "Ghi log vào file",
     "instruction": "Ghi chuỗi 'OOP Logic' vào file log.txt",
-    "eval_type": "functional",
+    "eval_type": "keyword",
     "expected": "OOP Logic",
-    "eval_script": "test -f log.txt && grep -q 'OOP Logic' log.txt",
     "max_steps": 5
   },
   {

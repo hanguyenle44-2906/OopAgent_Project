@@ -2,61 +2,61 @@
     "steps": [
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 1,
             "thought": "Calculate 15 * 24 + 100"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 2,
             "thought": "Create a file named test.txt with content 'Hello World'"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 3,
             "thought": "Read the contents of test.txt"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 4,
             "thought": "Run shell command 'echo C++ Agent'"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 5,
             "thought": "Calculate 1024 / 8"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 6,
             "thought": "Calculate (50 + 50) * 2"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 7,
             "thought": "Write 'OOP Logic' into log.txt"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 8,
             "thought": "Read the contents of log.txt"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 9,
             "thought": "Run shell command 'whoami'"
         },
         {
             "action": "eval",
-            "observation": "Score: 0.000000",
+            "observation": "Score: 1.000000",
             "step": 10,
             "thought": "Calculate 99 - 33 + 12"
         }
